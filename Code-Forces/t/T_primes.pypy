@@ -1,0 +1,27 @@
+import math
+
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+n = int(input())
+my_list = []
+
+for i in range(n):
+    element = int(input())
+    my_list.append(element)
+
+
+for i in my_list:
+    a = math.sqrt(i)
+    if a==int(a):
+        if is_prime(a):
+            print("YES")
+        else:
+            print("NO")
+    else :
+        print("NO")

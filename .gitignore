@@ -1,0 +1,20 @@
+# Ignore compiled binaries
+*.exe
+*.o
+
+# Ignore log files
+*.log
+
+# Ignore all files in the "build" directory
+/build/
+/AtCoder/
+/Level-1/
+/Level-2/
+/.vscode/
+/Codes/
+
+
+
+# Ignore configuration file for development environment
+config.dev.json
+

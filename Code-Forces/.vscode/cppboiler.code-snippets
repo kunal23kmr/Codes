@@ -1,0 +1,15 @@
+{
+	"kunal":
+	 {
+		"prefix": "cppboilerplate",
+		"body": [
+			"#include<iostream>",
+			"using namespace std;\n",
+			"int main(){",
+			"\t$1",
+			"\treturn 0;",
+			"}"
+		],
+		"description": "This is our boilerplate code for running c++ programs"
+	}
+}

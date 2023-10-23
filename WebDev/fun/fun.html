@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Text-to-Speech Button</title>
+</head>
+
+<body>
+    <button id="pronounceButton">Pronounce</button>
+    <script>
+        // Check if the browser supports the SpeechSynthesis API
+        if ('speechSynthesis' in window) {
+            const pronounceButton = document.getElementById('pronounceButton');
+
+            // Function to pronounce the default text
+            function pronounceDefaultText() {
+                const defaultText = "Tumm BC ho";
+                const speech = new SpeechSynthesisUtterance(defaultText);
+                speechSynthesis.speak(speech);
+            }
+
+            // Add a click event listener to the button
+            pronounceButton.addEventListener('click', pronounceDefaultText);
+        } else {
+            // Handle the case where the browser doesn't support SpeechSynthesis
+            alert("Text-to-speech is not supported in this browser.");
+        }
+    </script>
+</body>
+
+</html>

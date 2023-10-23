@@ -1,0 +1,169 @@
+import pandas as pd
+import numpy as np
+import vaex
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score, mean_absolute_error, accuracy_score
+from sklearn.preprocessing import LabelEncoder
+import joblib
+
+# Read the data from CSV files
+data = pd.read_csv('Doceree-HCP_Train.csv', encoding='latin-1')
+test = pd.read_csv('Doceree-HCP-Test.csv', encoding='latin-1')
+
+# Create a copy of the original data
+original_data = data.copy()
+
+# Assuming 'data' is pandas DataFrame containing string columns
+label_encoder = LabelEncoder()
+
+# Encode the string data to numerical values
+for column in data.columns:
+    if data[column].dtype == 'object':
+        data[column] = label_encoder.fit_transform(data[column])
+
+# The same thing for the test dataset
+for column in test.columns:
+    if test[column].dtype == 'object':
+        test[column] = label_encoder.fit_transform(test[column])
+
+# Export the vaex DataFrames to HDF5 files
+vaex_data = vaex.from_pandas(data)
+vaex_test = vaex.from_pandas(test)
+vaex_data.export_hdf5('Doceree-HCP_Train.hdf5')
+vaex_test.export_hdf5('Doceree-HCP-Test.hdf5')
+
+# Load the vaex DataFrame for training
+vaex_df = vaex.open('Doceree-HCP_Train.hdf5')
+
+# Iterate over each column in the DataFrame
+for column in vaex_df.columns:
+    # Fill missing values with 0 for the current column
+    vaex_df[column].fillna(0, inplace=True)
+
+vaex_df = vaex_df.shuffle(random_state=42)  # Shuffle the DataFrame with a fixed random state
+df_train, df_test = vaex_df.ml.train_test_split(test_size=0.2)  # Split into train and test sets
+
+# Define the features and target variables
+features = ['ID', 'DEVICETYPE', 'PLATFORM_ID', 'BIDREQUESTIP', 'USERPLATFORMUID', 'USERCITY', 'USERZIPCODE',
+            'USERAGENT', 'PLATFORMTYPE', 'CHANNELTYPE', 'URL', 'KEYWORDS']
+target = ['IS_HCP']
+txo_target = ['TAXONOMY']
+
+# Create the RandomForestRegressor model for IS_HCP prediction
+model = RandomForestRegressor()
+
+# Fill missing values with a specific value (e.g., 0)
+df_train = df_train.fillna(0)
+df_test = df_test.fillna(0)
+
+# Extract the features and target arrays from the DataFrames
+X_train = df_train[features].values
+y_train = df_train[target].values
+y_train = y_train.ravel()
+txo_train = y_train  # to use in the future
+
+X_test = df_test[features].values
+y_test = df_test[target].values
+y_test = y_test.ravel()
+txo_test = y_test  # to use in the future
+
+# Fit the model for IS_HCP prediction
+model.fit(X_train, y_train)
+
+# Set the threshold for classification
+threshold = 0.461
+
+# Make predictions for IS_HCP
+predictions = model.predict(X_test)
+
+# Apply threshold for classification
+class_predictions = np.where(predictions >= threshold, 1, 0)
+
+# Calculate and print the evaluation metrics for IS_HCP
+r2 = r2_score(y_test, class_predictions)
+mae = mean_absolute_error(y_test, class_predictions)
+
+print("IS_HCP Model Evaluation:")
+print("R-squared:", r2)
+print("Mean Absolute Error:", mae)
+
+# Convert TAXONOMY column back to object datatype
+original_taxonomy = original_data['TAXONOMY'].copy()
+
+# Extract the features and target arrays for TAXONOMY prediction
+X_train = df_train[features].values
+y_train = df_train[txo_target].values
+
+X_test = df_test[features].values
+y_test = df_test[txo_target].values
+
+X_train = X_train[txo_train == 1]
+y_train = y_train[txo_train == 1]
+y_train = y_train.ravel()
+
+X_test = X_test[txo_test == 1]
+y_test = y_test[txo_test == 1]
+y_test = y_test.ravel()
+
+# Create the RandomForestRegressor model for TAXONOMY prediction
+txo_model = RandomForestRegressor()
+
+# Fit the model for TAXONOMY prediction
+txo_model.fit(X_train, y_train)
+
+# Model Evaluation for TAXONOMY
+t_predictions = txo_model.predict(X_test)
+
+# Calculate and print the evaluation metrics for TAXONOMY
+r2 = r2_score(y_test, t_predictions)
+mae = mean_absolute_error(y_test, t_predictions)
+
+print("\nTAXONOMY Model Evaluation:")
+print("R-squared:", r2)
+print("Mean Absolute Error:", mae)
+
+# Save the trained models
+joblib.dump(model, 'trained_model.pkl')
+joblib.dump(txo_model, 'txo_trained_model.pkl')
+
+# Load the trained models for prediction
+prediction_model = joblib.load('trained_model.pkl')
+txo_prediction_model = joblib.load('txo_trained_model.pkl')
+
+# Load the vaex DataFrame for prediction
+vaex_prediction = vaex.open('Doceree-HCP-Test.hdf5')
+
+# Iterate over each column in the DataFrame
+for column in vaex_prediction.columns:
+    # Fill missing values with 0 for the current column
+    vaex_prediction[column].fillna(0, inplace=True)
+
+df_prediction = vaex_prediction
+df_prediction = df_prediction.fillna(0)
+
+X_prediction = df_prediction[features].values
+user_ids = df_prediction['ID'].values
+
+# Make predictions for IS_HCP
+predictions = prediction_model.predict(X_prediction)
+
+# Apply threshold for classification
+class_predictions = np.where(predictions >= threshold, 1, 0)
+IS_HCP = class_predictions
+
+# Making dataframe for txo model
+X_prediction_txo = X_prediction[IS_HCP == 1]
+ids = df_prediction['ID'].values
+ids_txo = ids[IS_HCP == 1]
+
+# Make predictions for TAXONOMY
+predictions_txo = txo_prediction_model.predict(X_prediction_txo)
+
+# Convert TAXONOMY predictions back to original values
+original_taxonomy[original_data['IS_HCP'] == 1] = label_encoder.inverse_transform(predictions_txo.astype(int))
+
+# Create a DataFrame with the user IDs, IS_HCP predictions, and TAXONOMY predictions
+predictions = pd.DataFrame({'ID': user_ids, 'taxonomy': original_taxonomy, 'IS_HCP': IS_HCP})
+
+# Save the DataFrame to an Excel file
+predictions.to_excel('predictions.xlsx', index=False)

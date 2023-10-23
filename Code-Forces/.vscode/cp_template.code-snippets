@@ -1,0 +1,17 @@
+{
+	"kunal":
+	 {
+		"prefix": "cp_temp",
+		"body": [
+			"#include<iostream>",
+			"using namespace std;\n",
+			"int main(){",
+            "\tios_base::sync_with_stdio(false);",
+            "\tcin.tie(NULL);",
+			"\t$1",
+			"\treturn 0;",
+			"}"
+		],
+		"description": "This is our boilerplate code for running c++ programs"
+	}
+}
