@@ -1,12 +1,12 @@
 const express = require("express");
 const mysql = require('mysql2');
-
 const cors = require('cors');
-
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+var currentUser = -1;
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -70,7 +70,6 @@ app.post('/signup', (req, res) => {
 });
 
 
-
 app.post('/login', (req, res) => {
     const mobileNumber = req.body.mobile_number;
     const password = req.body.password;
@@ -85,6 +84,8 @@ app.post('/login', (req, res) => {
         }
         if (results.length > 0) {
             console.log('mil gya');
+            // console.log(results[0].user_id);
+            currentUser = results[0].user_id;
             return res.status(200).json(results);
         }
         console.log("baigan");
@@ -93,27 +94,67 @@ app.post('/login', (req, res) => {
     });
 });
 
+//to geting the current user from server.
+app.get('/getuser', (req, res) => {
+    res.status(200).json(currentUser);
+});
 
-app.post('/viewProfile', (req, res) => {
-    // const mobileNumber = req.body.mobile_number;
-    // const password = req.body.password;
+app.post('/logout', (req, res) => {
+    currentUser = -1; // You can set currentUser to null to indicate a user is not logged in.
+    res.status(200).send('Logged out successfully');
+});
 
-    const id = req.body.user_id;
+
+app.post('/singleBlog', (req, res) => {
+    //inserting id into table
+    console.log('request is :', req.body.item_id);
+    const id = +req.body.item_id;
+    if (currentUser !== -1) {
+        var query = 'insert into cart value(?,?)';
+        db.query(query, [id, +currentUser], (err, result) => {
+            if (err) {
+                console.error('Error:', err);
+                return res.status(500).json({ message: 'Error' });
+            }
+            return res.status(200).json(result);
+        })
+    } else {
+        return res.status(500).json({ message: 'Error' });
+    }
+})
+
+//get cart list
+app.get(`/getcartList`, (req, res) => {
+    if (currentUser !== -1) {
+        var query = 'select id from cart where user_id = ?';//SELECT user_id FROM foodiestudio.cart;
+        db.query(query, [currentUser], (err, result) => {
+            if (err) {
+                console.error('Error:', err);
+                return res.status(500).json({ message: 'Error' });
+            }
+            return res.status(200).json(result);
+        })
+    } else {
+        return res.status(200).json({ message: 'not loged in' });
+    }
+})
+
+app.get('/viewProfile/:id', (req, res) => {
+    // console.log('hi')
+    const id = +req.params.id; // Access the user_id from URL parameters
 
     console.log(id);
-    // console.log(password);
-    db.query('SELECT user_id,first_name,last_name,mobile_number,city,state,country,pincode FROM users WHERE user_id= ?', [user_id], (err, results) => {
-        // Query execution and callback
+
+    db.query('SELECT user_id, first_name, last_name, mobile_number, city, state, country, pincode FROM users WHERE user_id = ?', [id], (err, results) => {
         if (err) {
             console.error('Error:', err);
             return res.status(500).json({ message: 'Error' });
         }
         if (results.length > 0) {
-            console.log('mil gya');
+            console.log('Found user profile');
             return res.status(200).json(results);
         }
-        console.log("baigan");
-        return res.status(400).json({ message: 'Wrong phone number or, password.' });
-
+        console.log("User not found");
+        return res.status(404).json({ message: 'User not found.' });
     });
 });
