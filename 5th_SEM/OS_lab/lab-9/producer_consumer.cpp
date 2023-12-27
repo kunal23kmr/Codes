@@ -3,7 +3,6 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-
 using namespace std;
 
 const int buffer_size = 5;
@@ -19,8 +18,7 @@ void producer(int id)
         int item = i;
         {
             unique_lock<mutex> lock(mtx);
-            buffer_not_full.wait(lock, []
-                                 { return buffer.size() < buffer_size; });
+            buffer_not_full.wait(lock, []{ return buffer.size() < buffer_size; });
             buffer.push(item);
             cout << "Producer produced item " << item << endl;
             buffer_not_empty.notify_all();

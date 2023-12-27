@@ -1,0 +1,1 @@
+{"name":"Local: v_shape","url":"a:\\Program Code VSC\\ICPC\\round-1\\v_shape.cpp","tests":[{"id":1700994408309,"input":"2\n4\n1 4\n2 1\n3 1\n4 5\n4\n1 8\n1 4\n1 0\n5 4","output":"2\n0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"a:\\Program Code VSC\\ICPC\\round-1\\v_shape.cpp","group":"local","local":true}

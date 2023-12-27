@@ -1,0 +1,1 @@
+{"name":"Local: book_read","url":"a:\\Program Code VSC\\ICPC\\round-1\\book_read.cpp","tests":[{"id":1700993132305,"input":"2\n4\n1 2\n1 3\n2\n1 4\n4\n1 2\n2\n1 4\n2\n","output":"6\n4"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"a:\\Program Code VSC\\ICPC\\round-1\\book_read.cpp","group":"local","local":true}

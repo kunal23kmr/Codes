@@ -1,0 +1,1 @@
+{"name":"Local: football","url":"a:\\Program Code VSC\\ICPC\\round-1\\football.cpp","tests":[{"id":1700982905404,"input":"2\n4 2\n3 2 1 6\n3 1 1 3\n2 0\n1 2\n1 2","output":"7\n1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"a:\\Program Code VSC\\ICPC\\round-1\\football.cpp","group":"local","local":true}

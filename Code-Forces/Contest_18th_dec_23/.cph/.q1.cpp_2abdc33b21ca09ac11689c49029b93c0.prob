@@ -1,0 +1,1 @@
+{"name":"Local: q1","url":"a:\\Program Code VSC\\Code-Forces\\Contest_18th_dec_23\\q1.cpp","tests":[{"id":1702914181096,"input":"5\n20002001\n391125\n200200\n2001000\n12","output":"2000 2001\n39 1125\n-1\n200 1000\n1 2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"a:\\Program Code VSC\\Code-Forces\\Contest_18th_dec_23\\q1.cpp","group":"local","local":true}

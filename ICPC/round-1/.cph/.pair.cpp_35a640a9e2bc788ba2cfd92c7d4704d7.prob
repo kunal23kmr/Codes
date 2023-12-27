@@ -1,0 +1,1 @@
+{"name":"Local: pair","url":"a:\\Program Code VSC\\ICPC\\round-1\\pair.cpp","tests":[{"id":1700992318744,"input":"2\n5\n1 4 2 5 5\n3\n13 12 7","output":"2\n0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"a:\\Program Code VSC\\ICPC\\round-1\\pair.cpp","group":"local","local":true}

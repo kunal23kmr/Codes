@@ -1,0 +1,1 @@
+{"name":"Local: nice","url":"a:\\Program Code VSC\\ICPC\\round-1\\nice.cpp","tests":[{"id":1700997383062,"input":"2\n5 1\n1 1 2 3\n6 1\n1 2 3 4 5","output":"-1 -1 -1 2 3 \n-1 1 2 3 4 5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"a:\\Program Code VSC\\ICPC\\round-1\\nice.cpp","group":"local","local":true}

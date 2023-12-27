@@ -1,0 +1,1 @@
+{"name":"Local: balance","url":"a:\\Program Code VSC\\ICPC\\round-1\\balance.cpp","tests":[{"id":1700994699053,"input":"1\n6 2\n1 5 3 2 1 6\n1 3","output":"1\n1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"a:\\Program Code VSC\\ICPC\\round-1\\balance.cpp","group":"local","local":true}

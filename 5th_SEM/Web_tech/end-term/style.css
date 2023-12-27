@@ -1,0 +1,40 @@
+h2 {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    font-weight: bold;
+}
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.error {
+    color: red;
+    font-size: 12px;
+}
+input[type="submit"] {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+form {
+    width: 30vw;
+    margin: 3rem auto; 
+}
+.form{
+    margin: auto;
+    margin-top: 5rem;
+    padding: 20px;
+    width: 40vw;
+    overflow: visible;
+}
