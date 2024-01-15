@@ -13,7 +13,7 @@
 /.vscode/
 /Codes/
 /WebDev/
-
+*.cph
 
 
 # Ignore configuration file for development environment

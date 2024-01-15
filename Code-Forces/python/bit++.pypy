@@ -1,0 +1,38 @@
+''' Author: Kunal Kumar'''
+
+import sys
+import math
+from collections import defaultdict, Counter
+
+# Function to read input faster
+def input():
+    return sys.stdin.readline().rstrip()
+
+# Function to perform task
+def solve():
+    n = int(input())
+    x=0
+    for _ in range(n):
+        i = input()
+        if i[1]=='+':
+            x+=1
+        else:
+            x-=1
+    print(x)
+    pass
+
+# Main function to run the program
+if __name__ == '__main__':
+    # Uncomment the following line if you want to read input from a file
+    # sys.stdin = open('input.txt', 'r')
+
+    # Uncomment the following line if you want to write output to a file
+    # sys.stdout = open('output.txt', 'w')
+
+    # Number of test cases
+    # t = int(input())
+
+    # # Iterate through each test case
+    # for _ in range(t):
+    #     solve()
+    solve()

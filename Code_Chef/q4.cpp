@@ -1,7 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
-#define fastio ios_base::sync_with_stdio(false); cin.tie(NULL);
+#define fastio                        \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);
 #define pb push_back
 #define ff first
 #define ss second
@@ -21,22 +23,31 @@ using namespace std;
 #define rep(n) for (int i = 0; i < n; i++)
 #define repa(i, a, b) for (int i = a; i < b; i++)
 #define mod 1000000007
+#define endl '\n'
 
-void solve() {
-   int n;
-   cin >> n;
-   rep(n){
-      cout << i;
-   }
+void solve()
+{
+    ll n, x, z;
+    cin >> n >> x >> z;
+    vector<ll> v(n);
+    for (auto &i : v)
+    {
+        cin >> i;
+    }
+    // (z+some_number )%x == 0;
+    // z%x + (some_number)%x == 0;
+    // z%x + (a1 + a2 + ... + am)%x == 0;
+    // z%x + a1%x +     
 }
 
-int main() {
-   fastio int t;
-   cin >> t;
+int main()
+{
+    fastio int t;
+    cin >> t;
 
-   for (int i = 1; i <= t; i++) {
-      solve();
-   }
-   return 0;
+    for (int i = 1; i <= t; i++)
+    {
+        solve();
+    }
+    return 0;
 }
-
